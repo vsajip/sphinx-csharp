@@ -510,6 +510,12 @@ class CSharpDomain(Domain):
         'objects': {},  # fullname -> docname, objtype
     }
 
+    def __init__(self, *args, **kwargs):
+        super(CSharpDomain, self).__init__(*args, **kwargs)
+        # alias role 'class' to 'type'
+        self.roles['class'] = self.roles['type']
+        self._role2type['class'] = ['class']
+
     def clear_doc(self, docname):
         for (typ, name), doc in dict(self.data['objects']).items():
             if doc == docname:
