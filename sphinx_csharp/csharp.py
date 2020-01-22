@@ -151,6 +151,7 @@ def parse_attr_signature(sig):
 
 MSDN_VALUE_TYPES = {
     'string': 'System.String',
+    'object': 'System.Object',
     'int': 'System.Int32',
     'long': 'System.Int64',
     'uint': 'System.UInt32',
