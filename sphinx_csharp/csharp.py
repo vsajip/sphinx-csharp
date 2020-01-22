@@ -9,6 +9,7 @@ from sphinx.domains import Domain, ObjType
 from sphinx.locale import _
 from sphinx.directives import ObjectDescription
 from sphinx.roles import XRefRole
+from sphinx.util.docfields import Field, GroupedField, TypedField
 from sphinx.util.nodes import make_refnode
 
 MODIFIERS_RE = '|'.join(['public', 'private', 'internal', 'protected',
@@ -379,6 +380,24 @@ class CSharpInherits(CSharpObject):
 class CSharpMethod(CSharpObject):
     """ Description of a C# method """
 
+    doc_field_types = [
+        TypedField('parameter', label=_('Parameters'),
+                     names=('param', 'parameter', 'arg', 'argument'),
+                     typerolename='class', typenames=('paramtype', 'type'),
+                     can_collapse=True),
+        # TypedField('variable', label=_('Variables'), rolename='obj',
+                     # names=('var', 'ivar', 'cvar'),
+                     # typerolename='class', typenames=('vartype',),
+                     # can_collapse=True),
+        # GroupedField('exceptions', label=_('Raises'), rolename='exc',
+                       # names=('raises', 'raise', 'exception', 'except'),
+                       # can_collapse=True),
+        Field('returnvalue', label=_('Returns'), has_arg=False,
+              names=('returns', 'return')),
+        # Field('returntype', label=_('Return type'), has_arg=False,
+                # names=('rtype',), bodyrolename='class'),
+    ]
+
     def handle_signature(self, sig, signode):
         modifiers, typ, name, \
             generic_types, params = parse_method_signature(sig)
@@ -525,7 +544,7 @@ class CSharpDomain(Domain):
     def resolve_xref(self, _, fromdocname, builder,
                      typ, target, node, contnode):
         targets = [target]
-        if node['csharp:parent'] is not None:
+        if node.get('csharp:parent') is not None:
             parts = node['csharp:parent'].split('.')
             while parts:
                 targets.append('.'.join(parts)+'.'+target)
@@ -533,6 +552,7 @@ class CSharpDomain(Domain):
 
         objects = self.data['objects']
         objtypes = self.objtypes_for_role(typ)
+        if objtypes is None: import pdb; pdb.set_trace()
         for tgt in targets:
             for objtype in objtypes:
                 if (objtype, tgt) in objects:
