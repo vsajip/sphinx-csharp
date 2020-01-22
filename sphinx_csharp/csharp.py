@@ -437,6 +437,24 @@ class CSharpProperty(CSharpObject):
 class CSharpIndexer(CSharpObject):
     """ Description of a C# indexer """
 
+    doc_field_types = [
+        TypedField('parameter', label=_('Parameters'),
+                     names=('param', 'parameter', 'arg', 'argument'),
+                     typerolename='class', typenames=('paramtype', 'type'),
+                     can_collapse=True),
+        # TypedField('variable', label=_('Variables'), rolename='obj',
+                     # names=('var', 'ivar', 'cvar'),
+                     # typerolename='class', typenames=('vartype',),
+                     # can_collapse=True),
+        GroupedField('exceptions', label=_('Throws'), rolename='exc',
+                       names=('throws', 'throw', 'exception', 'except'),
+                       can_collapse=True),
+        Field('returnvalue', label=_('Returns'), has_arg=False,
+              names=('returns', 'return')),
+        # Field('returntype', label=_('Return type'), has_arg=False,
+                # names=('rtype',), bodyrolename='class'),
+    ]
+
     def handle_signature(self, sig, signode):
         modifiers, typ, params, getter, setter = parse_indexer_signature(sig)
         self.append_modifiers(signode, modifiers)
@@ -488,6 +506,7 @@ class CSharpAttribute(CSharpObject):
 
 class CSharpXRefRole(XRefRole):
     def process_link(self, env, refnode, has_explicit_title, title, target):
+        # import pdb; pdb.set_trace()
         refnode['csharp:parent'] = env.ref_context.get('csharp:parent')
         return super(CSharpXRefRole, self).process_link(
             env, refnode, has_explicit_title, title, target)
