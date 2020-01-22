@@ -389,9 +389,9 @@ class CSharpMethod(CSharpObject):
                      # names=('var', 'ivar', 'cvar'),
                      # typerolename='class', typenames=('vartype',),
                      # can_collapse=True),
-        # GroupedField('exceptions', label=_('Raises'), rolename='exc',
-                       # names=('raises', 'raise', 'exception', 'except'),
-                       # can_collapse=True),
+        GroupedField('exceptions', label=_('Throws'), rolename='exc',
+                       names=('throws', 'throw', 'exception', 'except'),
+                       can_collapse=True),
         Field('returnvalue', label=_('Returns'), has_arg=False,
               names=('returns', 'return')),
         # Field('returntype', label=_('Return type'), has_arg=False,
@@ -506,6 +506,7 @@ class CSharpDomain(Domain):
         'value':     ObjType(_('value'), 'enum'),
         'attribute': ObjType(_('attribute'), 'attr'),
         'indexer':   ObjType(_('indexer'), 'idxr'),
+        'exception': ObjType(_('exception'), 'exc'),
     }
     directives = {
         'namespace': CSharpCurrentNamespace,
