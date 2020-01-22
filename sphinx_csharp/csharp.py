@@ -325,13 +325,13 @@ class CSharpObject(ObjectDescription):
         pnodes = addnodes.desc_addname()
         pnodes += nodes.Text('[')
 
-        for param in params:
-            if pnodes.children:
-                pnodes += nodes.Text(u', ')
-
+        n = len(params)
+        for i, param in enumerate(params):
             self.append_type(pnodes, param.typ)
             pnodes += nodes.Text(u' ')
             pnodes += nodes.emphasis(param.name, param.name)
+            if i < (n - 1):
+                pnodes += nodes.Text(u', ')
 
         pnodes += nodes.Text(']')
         node += pnodes
