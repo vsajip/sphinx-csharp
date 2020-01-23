@@ -199,6 +199,7 @@ def get_msdn_ref(name):
 
 SHORTEN_TYPE_PREFIXES = [
     'System.',
+    'System.IO.',
     'System.Collections.Generic.'
 ]
 
