@@ -23,7 +23,7 @@ METH_SIG_RE = re.compile(
     r'^((?:(?:' + MODIFIERS_RE +
     r')\s+)*)([^\s]+\s+)*([^\s<]+)\s*(<[^\(]+>)?\s*\((.*)\)$')
 PROP_SIG_RE = re.compile(
-    r'^([^\s]+\s+)*([^\s]+)\s+([^\s]+)\s*\{\s*(get;)?\s*(set;)?\s*\}$')
+    r'^(\w+\s+)*([\w.\[\]]+(<.*>)?)\s+(\w+)\s*\{\s*(get;)?\s*(set;)?\s*\}$')
 IDXR_SIG_RE = re.compile(
     r'^((?:(?:' + MODIFIERS_RE +
     r')\s+)*)([^\s]+)\s*this\s*\[\s*((?:[^\s]+)\s+(?:[^\s]+)' +
@@ -91,7 +91,7 @@ def parse_property_signature(sig):
     else:
         modifiers = []
         groups = groups[1:]
-    typ, name, getter, setter = groups
+    typ, _, name, getter, setter = groups
     return (modifiers, typ, name, getter is not None, setter is not None)
 
 
